@@ -76,6 +76,10 @@ def list_players():
 
 
 def add_player(nickname, phone, age_group, position):
+    if age_group not in AGE_GROUPS:
+        raise ValueError(f'无效的年龄组，必须是: {", ".join(AGE_GROUPS)}')
+    if position not in POSITIONS:
+        raise ValueError(f'无效的位置，必须是: {", ".join(POSITIONS)}')
     conn = get_conn()
     try:
         cur = conn.execute(
@@ -89,6 +93,10 @@ def add_player(nickname, phone, age_group, position):
 
 
 def update_player(player_id, nickname, phone, age_group, position):
+    if age_group not in AGE_GROUPS:
+        raise ValueError(f'无效的年龄组，必须是: {", ".join(AGE_GROUPS)}')
+    if position not in POSITIONS:
+        raise ValueError(f'无效的位置，必须是: {", ".join(POSITIONS)}')
     conn = get_conn()
     try:
         conn.execute(
@@ -124,6 +132,8 @@ def list_camps():
 
 
 def add_camp(name, start_date, end_date, fee, max_capacity, status='报名中'):
+    if status not in CAMP_STATUSES:
+        raise ValueError(f'无效的状态，必须是: {", ".join(CAMP_STATUSES)}')
     conn = get_conn()
     try:
         cur = conn.execute(
@@ -137,6 +147,8 @@ def add_camp(name, start_date, end_date, fee, max_capacity, status='报名中'):
 
 
 def update_camp(camp_id, name, start_date, end_date, fee, max_capacity, status):
+    if status not in CAMP_STATUSES:
+        raise ValueError(f'无效的状态，必须是: {", ".join(CAMP_STATUSES)}')
     conn = get_conn()
     try:
         conn.execute(
