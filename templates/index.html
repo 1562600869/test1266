@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>篮球训练营管理系统</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <header>
+        <h1>🏀 篮球训练营管理系统</h1>
+        <nav>
+            <button class="tab-btn active" data-tab="players">球员管理</button>
+            <button class="tab-btn" data-tab="camps">营期管理</button>
+            <button class="tab-btn" data-tab="register">报名管理</button>
+            <button class="tab-btn" data-tab="checkin">训练签到</button>
+            <button class="tab-btn" data-tab="stats">数据统计</button>
+        </nav>
+    </header>
+
+    <main>
+        <section id="players" class="tab-content active">
+            <div class="card">
+                <h2>球员列表</h2>
+                <form id="playerForm" class="form-inline">
+                    <input type="text" name="nickname" placeholder="昵称" required>
+                    <input type="tel" name="phone" placeholder="手机号" required>
+                    <select name="age_group" required>
+                        <option value="">年龄组</option>
+                    </select>
+                    <select name="position" required>
+                        <option value="">位置</option>
+                    </select>
+                    <button type="submit" class="btn-primary">添加球员</button>
+                </form>
+                <div class="table-container">
+                    <table id="playersTable">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>昵称</th>
+                                <th>手机</th>
+                                <th>年龄组</th>
+                                <th>位置</th>
+                                <th>本月签到</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <section id="camps" class="tab-content">
+            <div class="card">
+                <h2>营期列表</h2>
+                <form id="campForm" class="form-inline">
+                    <input type="text" name="name" placeholder="营期名称" required>
+                    <input type="date" name="start_date" required>
+                    <input type="date" name="end_date" required>
+                    <input type="number" name="fee" placeholder="费用(分)" required min="0">
+                    <input type="number" name="max_capacity" placeholder="最大人数" required min="1">
+                    <select name="status" required>
+                        <option value="">状态</option>
+                    </select>
+                    <button type="submit" class="btn-primary">添加营期</button>
+                </form>
+                <div class="table-container">
+                    <table id="campsTable">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>名称</th>
+                                <th>开始</th>
+                                <th>结束</th>
+                                <th>费用(分)</th>
+                                <th>最大人数</th>
+                                <th>已报名</th>
+                                <th>状态</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <section id="register" class="tab-content">
+            <div class="card">
+                <h2>报名管理</h2>
+                <form id="registerForm" class="form-inline">
+                    <select name="player_id" required>
+                        <option value="">选择球员</option>
+                    </select>
+                    <select name="camp_id" required>
+                        <option value="">选择营期(仅报名中)</option>
+                    </select>
+                    <button type="submit" class="btn-primary">报名</button>
+                </form>
+                <div class="table-container">
+                    <table id="registrationsTable">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>球员</th>
+                                <th>年龄组</th>
+                                <th>营期</th>
+                                <th>报名时间</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <section id="checkin" class="tab-content">
+            <div class="card">
+                <h2>训练签到</h2>
+                <form id="checkinForm" class="form-inline">
+                    <select name="player_id" required>
+                        <option value="">选择球员</option>
+                    </select>
+                    <select name="camp_id" required>
+                        <option value="">选择营期(仅进行中)</option>
+                    </select>
+                    <button type="submit" class="btn-primary">签到</button>
+                </form>
+                <div class="table-container">
+                    <table id="checkinsTable">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>球员</th>
+                                <th>年龄组</th>
+                                <th>营期</th>
+                                <th>签到日期</th>
+                                <th>时间</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <section id="stats" class="tab-content">
+            <div class="card">
+                <h2>数据统计</h2>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <h3>本月各年龄组报名人次</h3>
+                        <div id="ageGroupStats"></div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>球员本月签到次数查询</h3>
+                        <form id="playerCheckinForm" class="form-inline">
+                            <select name="player_id" required>
+                                <option value="">选择球员</option>
+                            </select>
+                            <button type="submit" class="btn-primary">查询</button>
+                        </form>
+                        <div id="playerCheckinResult"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div id="modal" class="modal hidden">
+        <div class="modal-content">
+            <h3 id="modalTitle">编辑</h3>
+            <form id="modalForm">
+                <div id="modalFields"></div>
+                <div class="modal-actions">
+                    <button type="button" class="btn-secondary" id="modalCancel">取消</button>
+                    <button type="submit" class="btn-primary">保存</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="toast" class="toast hidden"></div>
+
+    <script src="/static/app.js"></script>
+</body>
+</html>
